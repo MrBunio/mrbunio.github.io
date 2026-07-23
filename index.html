@@ -614,6 +614,77 @@
                 opacity: 0.001;
                 pointer-events: none;
             }
+
+            /* --- Cat counter + easter egg additions --- */
+            .cat-counter {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                background: var(--card-bg);
+                border: 2px solid var(--accent);
+                border-radius: 2rem;
+                padding: 0.6rem 1.4rem;
+                margin-top: 1rem;
+                font-weight: bold;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            .cat-counter span.count-num {
+                color: var(--accent);
+                font-size: 1.3rem;
+            }
+            .achievement-toast {
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%) translateY(150%);
+                background: linear-gradient(
+                    135deg,
+                    var(--accent) 0%,
+                    var(--accent2) 100%
+                );
+                color: white;
+                padding: 1rem 1.8rem;
+                border-radius: 1.2rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                font-weight: bold;
+                z-index: 5000;
+                transition: transform 0.4s ease;
+                white-space: nowrap;
+            }
+            .achievement-toast.show {
+                transform: translateX(-50%) translateY(0);
+            }
+            .konami-flash {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: 9998;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 4rem;
+                opacity: 0;
+                background: rgba(0, 0, 0, 0.15);
+            }
+            .konami-flash.show {
+                animation: konamiFlash 1.2s ease-out forwards;
+            }
+            @keyframes konamiFlash {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.7);
+                }
+                20% {
+                    opacity: 1;
+                    transform: scale(1.1);
+                }
+                40% {
+                    transform: scale(1);
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
         </style>
     </head>
     <body>
@@ -629,6 +700,22 @@
         </header>
 
         <main>
+            <section class="card fade-in" style="text-align: center;">
+                <h2>🏆 Gablota Kotów</h2>
+                <p style="opacity: 0.8; margin-top: -0.5rem;">
+                    Łączna liczba kotów zrespionych przez wszystkich
+                    odwiedzających tę stronę.
+                </p>
+                <div
+                    class="stat-card"
+                    style="max-width: 320px; margin: 1.5rem auto 0.5rem;"
+                >
+                    <span class="hacker-emoji">🐱</span>
+                    <div class="stat-number" id="global-cat-count">–</div>
+                    <div class="stat-label">kotów zrespionych</div>
+                </div>
+            </section>
+
             <section class="card pulse fade-in">
                 <h2>About Me</h2>
                 <p>
@@ -737,6 +824,9 @@
                 </p>
                 <div class="cat-emoji spin">😺</div>
                 <p>Click anywhere to create more cats!</p>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 0.8rem;">
+                    Psst... try the <strong>Konami Code</strong> (↑ ↑ ↓ ↓ ← → ← → B A) for a surprise 👀
+                </p>
             </div>
 
             <div style="text-align: center; margin: 3rem">
@@ -769,8 +859,11 @@
             </div>
         </main>
 
+        <div class="achievement-toast" id="achievement-toast"></div>
+        <div class="konami-flash" id="konami-flash">🎊 SECRET UNLOCKED 🎊</div>
+
         <footer>
-            <p>© 2026 Bunio | Version 3.0 🔧</p>
+            <p>© 2026 Bunio | Version 4.0 🔧</p>
         </footer>
 
         <script>
@@ -858,12 +951,96 @@
                     .addEventListener("click", toggleTheme);
             })();
 
+            
+            const GLOBAL_COUNT_API = "https://countapi.mileshilliard.com/api/v1";
+          
+            const GLOBAL_CAT_KEY =
+                "bunio-cats-v2-" +
+                (location.hostname || "local").replace(/[^a-z0-9]/gi, "-") +
+                (location.pathname || "").replace(/[^a-z0-9]/gi, "-");
+            let globalCatCount = null;
+
+            function updateGlobalCatDisplay() {
+                const el = document.getElementById("global-cat-count");
+                if (!el) return;
+                el.textContent =
+                    globalCatCount === null
+                        ? "–"
+                        : globalCatCount.toLocaleString("pl-PL");
+            }
+
+            async function fetchGlobalCatCount() {
+                try {
+                    const res = await fetch(
+                        `${GLOBAL_COUNT_API}/get/${GLOBAL_CAT_KEY}`,
+                    );
+                    if (res.ok) {
+                        const data = await res.json();
+                        globalCatCount = parseInt(data.value, 10) || 0;
+                    } else {
+                        
+                        globalCatCount = 0;
+                    }
+                } catch (e) {
+                    globalCatCount = null; 
+                }
+                updateGlobalCatDisplay();
+            }
+
+            async function hitGlobalCatCounter() {
+                try {
+                    const res = await fetch(
+                        `${GLOBAL_COUNT_API}/hit/${GLOBAL_CAT_KEY}`,
+                    );
+                    if (res.ok) {
+                        const data = await res.json();
+                        globalCatCount =
+                            parseInt(data.value, 10) ||
+                            (globalCatCount || 0) + 1;
+                        updateGlobalCatDisplay();
+
+                        if (
+                            CAT_MILESTONES.includes(globalCatCount) &&
+                            !seenMilestones.has(globalCatCount)
+                        ) {
+                            seenMilestones.add(globalCatCount);
+                            showAchievementToast(
+                                `🏆 ${globalCatCount} cats summoned site-wide!`,
+                            );
+                        }
+                    }
+                } catch (e) {
+                
+                }
+            }
+
+            fetchGlobalCatCount();
+
+            const CAT_MILESTONES = [5, 10, 25, 50, 100, 250, 500, 1000];
+            const seenMilestones = new Set();
+
+            let toastTimer = null;
+            function showAchievementToast(message) {
+                const toast = document.getElementById("achievement-toast");
+                toast.textContent = message;
+                toast.classList.add("show");
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 2800);
+            }
+
+            function registerCatSummoned() {
+                hitGlobalCatCounter();
+            }
+
             document.addEventListener("click", (e) => {
                 if (
                     e.target.id !== "chaos-btn" &&
                     e.target.id !== "theme-toggle"
                 ) {
                     createCat(e.clientX, e.clientY);
+                    registerCatSummoned();
                 }
             });
 
@@ -897,6 +1074,72 @@
                     }
                 }, 2100);
             }
+
+            const KONAMI_SEQUENCE = [
+                "ArrowUp",
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowLeft",
+                "ArrowRight",
+                "b",
+                "a",
+            ];
+            let konamiProgress = 0;
+
+            function catRainBurst() {
+                const rainEmojis = ["😺", "😸", "😻", "🐱", "🌈", "✨"];
+                for (let i = 0; i < 60; i++) {
+                    setTimeout(() => {
+                        const drop = document.createElement("div");
+                        drop.textContent =
+                            rainEmojis[
+                                Math.floor(Math.random() * rainEmojis.length)
+                            ];
+                        drop.style.position = "fixed";
+                        drop.style.left = Math.random() * 100 + "vw";
+                        drop.style.top = "-50px";
+                        drop.style.fontSize = 1.5 + Math.random() * 2 + "rem";
+                        drop.style.zIndex = "9997";
+                        drop.style.pointerEvents = "none";
+                        drop.style.transition = `top ${2 + Math.random() * 2}s linear, transform ${2 + Math.random() * 2}s linear`;
+                        document.body.appendChild(drop);
+
+                        requestAnimationFrame(() => {
+                            drop.style.top = "110vh";
+                            drop.style.transform = `rotate(${Math.random() * 720 - 360}deg)`;
+                        });
+
+                        setTimeout(() => {
+                            if (drop.parentNode) drop.parentNode.removeChild(drop);
+                        }, 4200);
+                    }, i * 60);
+                }
+            }
+
+            function triggerKonamiEasterEgg() {
+                const flash = document.getElementById("konami-flash");
+                flash.classList.remove("show");
+                void flash.offsetWidth; // restart animation
+                flash.classList.add("show");
+                showAchievementToast("🎮 Konami Code activated — enjoy the cat rain!");
+                catRainBurst();
+            }
+
+            document.addEventListener("keydown", (e) => {
+                const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+                if (key === KONAMI_SEQUENCE[konamiProgress]) {
+                    konamiProgress++;
+                    if (konamiProgress === KONAMI_SEQUENCE.length) {
+                        triggerKonamiEasterEgg();
+                        konamiProgress = 0;
+                    }
+                } else {
+                    konamiProgress = key === KONAMI_SEQUENCE[0] ? 1 : 0;
+                }
+            });
 
             window.addEventListener("load", () => {
                 createConfetti();
