@@ -1,1081 +1,1715 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl" data-theme="light">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Bunio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="Mały zakątek internetu Bunia, miłośnika kotów i dobrych rozmów."
+        />
+        <meta name="theme-color" content="#f7f4ef" />
+        <title>Bunio — mój mały zakątek internetu</title>
         <style>
             :root {
-                --bg: #fff;
-                --text: #111;
-                --card-bg: #f9f9f9;
-                --accent: #e17dab;
-                --accent2: #9c89b8;
-                --accent3: #f0a6ca;
+                color-scheme: light;
+                --page: #f7f4ef;
+                --surface: #fffdfa;
+                --surface-soft: #f0ece6;
+                --text: #282522;
+                --muted: #77716c;
+                --line: #e7e0d8;
+                --accent: #bd6387;
+                --accent-dark: #91435f;
+                --accent-soft: #f5e4eb;
+                --lavender: #8d7ba9;
+                --shadow: 0 18px 50px rgba(48, 37, 32, 0.07);
+                --radius: 22px;
             }
+
             [data-theme="dark"] {
-                --bg: #1a1a1a;
-                --text: #f5f5f5;
-                --card-bg: #2a2a2a;
-                --accent: #ff91c1;
-                --accent2: #b19cd9;
-                --accent3: #ffb6c1;
+                color-scheme: dark;
+                --page: #19171b;
+                --surface: #242126;
+                --surface-soft: #302b32;
+                --text: #f4eff2;
+                --muted: #b2a8b0;
+                --line: #3a333d;
+                --accent: #e58aad;
+                --accent-dark: #f0a8c3;
+                --accent-soft: #382631;
+                --lavender: #b3a0d0;
+                --shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
             }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 6rem;
+            }
+
             body {
-                margin: 0;
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-                background: var(--bg);
-                color: var(--text);
-                transition:
-                    background 0.3s,
-                    color 0.3s;
-                overflow-x: hidden;
-                line-height: 1.6;
+                min-width: 320px;
                 min-height: 100vh;
-                position: relative;
-            }
-            header {
-                padding: 2rem;
-                text-align: center;
-                position: relative;
-                background: linear-gradient(
-                    135deg,
-                    var(--accent) 0%,
-                    var(--accent2) 100%
-                );
-                color: white;
-                margin-bottom: 2rem;
-                border-radius: 0 0 2rem 2rem;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-                font-size: 3rem;
                 margin: 0;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-                letter-spacing: 1px;
+                background:
+                    radial-gradient(ellipse at 9% 9%, rgba(189, 99, 135, 0.09), transparent 28rem),
+                    radial-gradient(ellipse at 92% 38%, rgba(141, 123, 169, 0.08), transparent 30rem),
+                    var(--page);
+                color: var(--text);
+                font-family:
+                    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                    "Segoe UI", sans-serif;
+                line-height: 1.65;
+                transition:
+                    background-color 180ms ease,
+                    color 180ms ease;
             }
-            main {
-                max-width: 900px;
-                margin: 2rem auto;
-                padding: 0 1.5rem;
-                position: relative;
-                z-index: 2;
-                padding-bottom: 4rem;
-            }
-            .card {
-                background: var(--card-bg);
-                border-radius: 1.5rem;
-                padding: 2rem;
-                margin-bottom: 1.5rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                transition: all 0.4s ease;
-                overflow: hidden;
-                position: relative;
-            }
-            .card h2 {
-                margin-top: 0;
-                color: var(--accent);
-                font-size: 1.8rem;
-                padding-bottom: 0.5rem;
-                display: inline-block;
-            }
-            footer {
-                text-align: center;
-                padding: 2rem;
-                font-size: 0.9rem;
-                opacity: 0.7;
-                position: relative;
-                z-index: 2;
-                margin-top: 3rem;
-                border-top: 1px solid var(--accent3);
-            }
-            .theme-toggle {
-                cursor: pointer;
-                padding: 0.8rem 1.5rem;
-                border: none;
-                border-radius: 2rem;
-                background: linear-gradient(
-                    135deg,
-                    var(--accent) 0%,
-                    var(--accent2) 100%
-                );
-                color: white;
-                font-size: 1rem;
-                margin-top: 1.5rem;
-                position: static;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                font-weight: bold;
-                letter-spacing: 0.5px;
-            }
+
             a {
-                color: var(--accent2);
-                text-decoration: none;
-                transition: all 0.3s ease;
-                font-weight: 500;
+                color: var(--accent-dark);
+                text-decoration-thickness: 1px;
+                text-underline-offset: 3px;
             }
+
             a:hover {
                 color: var(--accent);
             }
 
-            .rainbow {
-                background: linear-gradient(
-                    90deg,
-                    #ff0000,
-                    #ff8000,
-                    #ffff00,
-                    #80ff00,
-                    #00ffff,
-                    #0000ff,
-                    #8000ff,
-                    #ff00ff,
-                    #ff0000
+            button {
+                color: inherit;
+                font: inherit;
+            }
+
+            button:focus-visible,
+            a:focus-visible {
+                outline: 3px solid var(--lavender);
+                outline-offset: 4px;
+            }
+
+            .skip-link {
+                position: fixed;
+                z-index: 20;
+                top: 1rem;
+                left: 1rem;
+                padding: 0.7rem 1rem;
+                transform: translateY(-160%);
+                border-radius: 999px;
+                background: var(--text);
+                color: var(--page);
+            }
+
+            .skip-link:focus {
+                transform: translateY(0);
+            }
+
+            .site-header {
+                position: sticky;
+                z-index: 10;
+                top: 0;
+                border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+                background: color-mix(in srgb, var(--page) 88%, transparent);
+                backdrop-filter: blur(16px);
+            }
+
+            .header-inner,
+            .page-shell,
+            .footer-inner {
+                width: min(1120px, calc(100% - 3rem));
+                margin-inline: auto;
+            }
+
+            .header-inner {
+                display: flex;
+                min-height: 76px;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.5rem;
+            }
+
+            .wordmark {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.7rem;
+                color: var(--text);
+                font-size: 1.05rem;
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                text-decoration: none;
+            }
+
+            .wordmark-mark {
+                display: grid;
+                width: 36px;
+                aspect-ratio: 1;
+                place-items: center;
+                border: 1px solid var(--line);
+                border-radius: 13px;
+                background: var(--surface);
+                font-size: 1.1rem;
+            }
+
+            .header-actions,
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 1.4rem;
+            }
+
+            .nav-links a {
+                color: var(--muted);
+                font-size: 0.88rem;
+                font-weight: 650;
+                text-decoration: none;
+                transition: color 160ms ease;
+            }
+
+            .nav-links a:hover {
+                color: var(--accent-dark);
+            }
+
+            .icon-button {
+                display: inline-grid;
+                width: 42px;
+                aspect-ratio: 1;
+                place-items: center;
+                border: 1px solid var(--line);
+                border-radius: 50%;
+                background: var(--surface);
+                cursor: pointer;
+                transition:
+                    border-color 160ms ease,
+                    transform 160ms ease;
+            }
+
+            .icon-button:hover {
+                transform: translateY(-2px);
+                border-color: var(--accent);
+            }
+
+            .page-shell {
+                padding-block: 3.5rem 5rem;
+            }
+
+            .hero {
+                position: relative;
+                display: grid;
+                min-height: 380px;
+                align-items: center;
+                overflow: hidden;
+                padding: clamp(2rem, 6vw, 5rem);
+                border: 1px solid var(--line);
+                border-radius: 32px;
+                background:
+                    radial-gradient(circle at 85% 50%, rgba(189, 99, 135, 0.12), transparent 17rem),
+                    var(--surface);
+                box-shadow: var(--shadow);
+            }
+
+            .hero::after {
+                position: absolute;
+                right: 6%;
+                bottom: -6.5rem;
+                width: 18rem;
+                aspect-ratio: 1;
+                border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+                border-radius: 50%;
+                content: "";
+                box-shadow:
+                    0 0 0 2rem color-mix(in srgb, var(--accent) 6%, transparent),
+                    0 0 0 4rem color-mix(in srgb, var(--lavender) 5%, transparent);
+                pointer-events: none;
+            }
+
+            .hero-copy {
+                position: relative;
+                z-index: 1;
+                max-width: 650px;
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                margin: 0 0 1.2rem;
+                color: var(--accent-dark);
+                font-size: 0.76rem;
+                font-weight: 800;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+            }
+
+            .status-dot {
+                width: 8px;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                background: #73a884;
+                box-shadow: 0 0 0 4px color-mix(in srgb, #73a884 16%, transparent);
+            }
+
+            h1,
+            h2,
+            h3,
+            p {
+                margin-top: 0;
+            }
+
+            h1 {
+                max-width: 680px;
+                margin-bottom: 1rem;
+                font-size: clamp(2.8rem, 7vw, 5.4rem);
+                font-weight: 800;
+                letter-spacing: -0.075em;
+                line-height: 0.98;
+            }
+
+            .hero h1 span {
+                color: var(--accent);
+            }
+
+            .hero-description {
+                max-width: 560px;
+                margin-bottom: 1.7rem;
+                color: var(--muted);
+                font-size: clamp(1rem, 2vw, 1.14rem);
+            }
+
+            .hero-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .button {
+                display: inline-flex;
+                min-height: 48px;
+                align-items: center;
+                justify-content: center;
+                gap: 0.55rem;
+                padding: 0.65rem 1.1rem;
+                border: 1px solid transparent;
+                border-radius: 999px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                font-weight: 750;
+                text-decoration: none;
+                transition:
+                    transform 160ms ease,
+                    background-color 160ms ease,
+                    border-color 160ms ease;
+            }
+
+            .button:hover {
+                transform: translateY(-2px);
+            }
+
+            .button-primary {
+                background: var(--accent);
+                color: #fff;
+            }
+
+            .button-primary:hover {
+                background: var(--accent-dark);
+                color: #fff;
+            }
+
+            .button-secondary {
+                border-color: var(--line);
+                background: var(--surface);
+                color: var(--text);
+            }
+
+            .button-secondary:hover {
+                border-color: var(--accent);
+            }
+
+            .hero-note {
+                position: absolute;
+                right: 9%;
+                bottom: 3rem;
+                z-index: 1;
+                width: 142px;
+                aspect-ratio: 1;
+                display: grid;
+                place-items: center;
+                border: 1px solid var(--line);
+                border-radius: 50%;
+                background: var(--surface-soft);
+                font-size: 4.4rem;
+                transform: rotate(8deg);
+                box-shadow: 0 15px 40px rgba(48, 37, 32, 0.08);
+            }
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                align-items: start;
+                gap: 1.25rem;
+                margin-top: 1.25rem;
+            }
+
+            .main-column {
+                display: grid;
+                gap: 1.25rem;
+            }
+
+            .side-column {
+                display: flex;
+                min-width: 0;
+                align-items: flex-start;
+                gap: 1rem;
+                overflow-x: auto;
+                padding: 0.25rem 0.15rem 1rem;
+                scroll-padding-inline: 0.15rem;
+                scroll-snap-type: x mandatory;
+                scrollbar-color: var(--accent) var(--surface-soft);
+                scrollbar-width: thin;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .side-column > .panel {
+                width: min(330px, calc(100vw - 3rem));
+                min-width: 0;
+                flex: 0 0 min(330px, calc(100vw - 3rem));
+                scroll-snap-align: start;
+            }
+
+            .panel {
+                padding: clamp(1.35rem, 3vw, 2rem);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                background: var(--surface);
+                box-shadow: var(--shadow);
+            }
+
+            .section-heading {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .section-kicker {
+                margin-bottom: 0.3rem;
+                color: var(--accent-dark);
+                font-size: 0.7rem;
+                font-weight: 800;
+                letter-spacing: 0.13em;
+                text-transform: uppercase;
+            }
+
+            h2 {
+                margin-bottom: 0;
+                font-size: clamp(1.35rem, 3vw, 1.7rem);
+                letter-spacing: -0.045em;
+                line-height: 1.2;
+            }
+
+            .about-copy {
+                margin-bottom: 0;
+                color: var(--muted);
+            }
+
+            .about-copy strong {
+                color: var(--text);
+                font-weight: 700;
+            }
+
+            .contact-list {
+                display: grid;
+                gap: 0.75rem;
+                margin: 1.3rem 0 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .contact-list a {
+                display: flex;
+                align-items: center;
+                gap: 0.7rem;
+                font-weight: 650;
+                text-decoration: none;
+            }
+
+            .contact-icon {
+                display: inline-grid;
+                width: 36px;
+                aspect-ratio: 1;
+                flex: 0 0 auto;
+                place-items: center;
+                border-radius: 12px;
+                background: var(--accent-soft);
+            }
+
+            .legend-intro {
+                margin-bottom: 1rem;
+                color: var(--muted);
+                font-size: 0.92rem;
+            }
+
+            .legend-list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.6rem;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .legend-list li {
+                min-width: 0;
+            }
+
+            .legend-name {
+                width: 100%;
+                min-height: 44px;
+                padding: 0.6rem 0.8rem;
+                overflow-wrap: anywhere;
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                background: var(--page);
+                cursor: default;
+                font-size: 0.86rem;
+                font-weight: 750;
+                text-align: left;
+                transition:
+                    transform 150ms ease,
+                    border-color 150ms ease,
+                    box-shadow 150ms ease;
+            }
+
+            .legend-name span {
+                background-image: linear-gradient(
+                    100deg,
+                    #b72b43 0%,
+                    #a94b08 17%,
+                    #806100 33%,
+                    #14734e 50%,
+                    #285ba0 67%,
+                    #65439c 83%,
+                    #b12d72 100%
                 );
-                background-size: 400% 100%;
+                background-position: var(--rainbow-position, 0%) center;
+                background-size: 240% 100%;
+                background-clip: text;
+                color: transparent;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                animation: rainbow 4s linear infinite;
-                font-weight: bold;
             }
 
-            .floating {
-                animation: floating 3s ease-in-out infinite;
-            }
-            @keyframes floating {
-                0%,
-                100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-15px);
-                }
+            .legend-list li:nth-child(6n + 2) .legend-name span {
+                --rainbow-position: 16%;
             }
 
-            .pulse {
-                animation: pulse 2s infinite;
-            }
-            @keyframes pulse {
-                0% {
-                    transform: scale(1);
-                }
-                50% {
-                    transform: scale(1.05);
-                }
-                100% {
-                    transform: scale(1);
-                }
+            .legend-list li:nth-child(6n + 3) .legend-name span {
+                --rainbow-position: 32%;
             }
 
-            .spin {
-                animation: spin 5s linear infinite;
-            }
-            @keyframes spin {
-                100% {
-                    transform: rotate(360deg);
-                }
+            .legend-list li:nth-child(6n + 4) .legend-name span {
+                --rainbow-position: 48%;
             }
 
-            .confetti {
-                position: absolute;
-                width: 12px;
-                height: 12px;
-                opacity: 0;
-                z-index: 1;
-                border-radius: 50%;
-                box-shadow: 0 0 10px currentColor;
+            .legend-list li:nth-child(6n + 5) .legend-name span {
+                --rainbow-position: 64%;
             }
 
-            @keyframes rainbow {
-                0% {
-                    background-position: 0% 50%;
-                }
-                100% {
-                    background-position: 400% 50%;
-                }
+            .legend-list li:nth-child(6n) .legend-name span {
+                --rainbow-position: 80%;
             }
 
-            table {
-                width: 100%;
-                border-collapse: separate;
-                border-spacing: 0;
-                margin: 1.5rem 0;
-                border-radius: 1rem;
-                overflow: hidden;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            }
-            th {
-                background: linear-gradient(
-                    135deg,
-                    var(--accent) 0%,
-                    var(--accent2) 100%
-                );
-                color: white;
-                padding: 1.2rem;
-                text-align: left;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                font-size: 0.9rem;
-            }
-            td {
-                padding: 1rem 1.2rem;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
-            }
-            tr:last-child td {
-                border-bottom: none;
+            .legend-name[data-game-target="true"] {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+                cursor: pointer;
+                transform: translateY(-2px);
             }
 
-            tr td:first-child:hover {
-                opacity: 0.3;
+            .legend-name.game-active {
+                cursor: pointer;
             }
 
-            .chaos-mode .card {
-                background: transparent !important;
-                box-shadow: none !important;
-                border: none !important;
+            .legend-name.game-active:hover {
+                border-color: var(--accent);
             }
 
-            .chaos-mode table {
-                display: none !important;
+            .legend-name:focus-visible {
+                outline: 3px solid var(--accent);
+                outline-offset: 3px;
             }
 
-            .chaos-mode .rainbow {
-                opacity: 1 !important;
-                position: static !important;
-            }
-
-            .special-section {
-                text-align: center;
-                margin: 3rem 0;
-                padding: 2rem;
-                border-radius: 2rem;
-                background: linear-gradient(
-                    135deg,
-                    rgba(225, 125, 171, 0.1) 0%,
-                    rgba(156, 137, 184, 0.1) 100%
-                );
-            }
-
-            .cat-emoji {
-                font-size: 3rem;
-                display: inline-block;
-                margin: 1rem 0;
-                filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
-            }
-
-            .glow {
-                animation: glow 2s ease-in-out infinite alternate;
-            }
-
-            @keyframes glow {
-                from {
-                    text-shadow:
-                        0 0 5px #fff,
-                        0 0 10px var(--accent),
-                        0 0 15px var(--accent);
-                }
-                to {
-                    text-shadow:
-                        0 0 10px #fff,
-                        0 0 20px var(--accent2),
-                        0 0 30px var(--accent2);
-                }
-            }
-
-            .fade-in {
-                animation: fadeIn 1.5s ease-in-out;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .typewriter {
-                overflow: hidden;
-                border-right: 3px solid var(--accent);
-                white-space: nowrap;
-                margin: 0 auto;
-                letter-spacing: 1px;
-                animation:
-                    typing 3.5s steps(40, end),
-                    blink-caret 0.75s step-end infinite;
-            }
-
-            @keyframes typing {
-                from {
-                    width: 0;
-                }
-                to {
-                    width: 100%;
-                }
-            }
-
-            @keyframes blink-caret {
-                from,
-                to {
-                    border-color: transparent;
-                }
-                50% {
-                    border-color: var(--accent);
-                }
-            }
-
-            .particles {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: -1;
-            }
-
-            .particle {
-                position: absolute;
-                width: 4px;
-                height: 4px;
-                background: var(--accent3);
-                border-radius: 50%;
-                animation: particleFloat 20s linear infinite;
-                opacity: 0.6;
-            }
-
-            @keyframes particleFloat {
-                0% {
-                    transform: translateY(100vh) rotate(0deg);
-                    opacity: 0;
-                }
-                10% {
-                    opacity: 0.6;
-                }
-                90% {
-                    opacity: 0.6;
-                }
-                100% {
-                    transform: translateY(-100px) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-
-            .cyber-stats {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 1.5rem;
-                margin: 2rem 0;
-            }
-
-            .stat-card {
-                background: linear-gradient(
-                    135deg,
-                    var(--accent) 0%,
-                    var(--accent2) 100%
-                );
-                color: white;
-                padding: 2rem;
-                border-radius: 1.5rem;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            .counter-panel {
                 position: relative;
                 overflow: hidden;
+                background:
+                    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--accent) 15%, transparent), transparent 13rem),
+                    var(--surface);
             }
 
-            .stat-number {
-                font-size: 3.5rem;
-                font-weight: bold;
-                margin: 0.5rem 0;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-                animation: countUp 2s ease-out;
+            .counter-panel::after {
+                position: absolute;
+                right: -2.3rem;
+                bottom: -3rem;
+                color: color-mix(in srgb, var(--accent) 11%, transparent);
+                content: "🐾";
+                font-size: 8rem;
+                line-height: 1;
+                pointer-events: none;
+                transform: rotate(-18deg);
             }
 
-            .stat-label {
+            .counter-panel > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .counter-value {
+                margin: 0.65rem 0 0;
+                color: var(--accent-dark);
+                font-size: clamp(3.2rem, 8vw, 4.8rem);
+                font-weight: 850;
+                letter-spacing: -0.08em;
+                line-height: 1;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .counter-label {
+                margin: 0.45rem 0 1.2rem;
+                color: var(--muted);
+                font-size: 0.88rem;
+            }
+
+            .counter-status {
+                min-height: 1.4em;
+                margin: 0.7rem 0 0;
+                color: var(--muted);
+                font-size: 0.76rem;
+            }
+
+            .counter-status[data-state="error"] {
+                color: var(--accent-dark);
+            }
+
+            .guest-card {
+                text-align: center;
+            }
+
+            .guest-cat {
+                display: grid;
+                width: 82px;
+                aspect-ratio: 1;
+                place-items: center;
+                margin: 0 auto 1rem;
+                border: 1px solid var(--line);
+                border-radius: 26px;
+                background: var(--accent-soft);
+                font-size: 2.8rem;
+                transform: rotate(-5deg);
+            }
+
+            .guest-card p {
+                margin: 0.6rem 0 1.1rem;
+                color: var(--muted);
+                font-size: 0.9rem;
+            }
+
+            .fortune-card {
+                text-align: center;
+            }
+
+            .fortune-text {
+                min-height: 3.3em;
+                margin: 0.8rem 0 1rem;
+                color: var(--muted);
+                font-size: 0.9rem;
+            }
+
+            .wiki-card {
+                text-align: center;
+            }
+
+            .wiki-status {
+                min-height: 3.3em;
+                margin: 0.8rem 0 1rem;
+                color: var(--muted);
+                font-size: 0.9rem;
+            }
+
+            .wiki-result {
+                margin: 1rem 0;
+                padding: 1rem;
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                background: var(--page);
+                text-align: left;
+            }
+
+            .wiki-result[hidden] {
+                display: none;
+            }
+
+            .wiki-result h3 {
+                margin-bottom: 0.5rem;
+                font-size: 1.05rem;
+                letter-spacing: -0.025em;
+                line-height: 1.35;
+            }
+
+            .wiki-result p {
+                max-height: 10rem;
+                margin-bottom: 0.8rem;
+                overflow: auto;
+                color: var(--muted);
+                font-size: 0.82rem;
+            }
+
+            .wiki-link {
+                font-size: 0.82rem;
+                font-weight: 750;
+                text-decoration: none;
+            }
+
+            .easter-egg-hint {
+                margin: 1rem 0 0;
+                color: var(--muted);
+                font-size: 0.72rem;
+            }
+
+            .game-panel {
+                text-align: left;
+            }
+
+            .game-stats {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                margin: 1.1rem 0;
+            }
+
+            .game-stat {
+                color: var(--muted);
+                font-size: 0.78rem;
+            }
+
+            .game-stat strong {
+                display: block;
+                color: var(--text);
+                font-size: 1.35rem;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .game-status {
+                min-height: 2.8em;
+                margin: 0.8rem 0 0;
+                color: var(--muted);
+                font-size: 0.8rem;
+            }
+
+            .ranking {
+                margin-top: 1.2rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--line);
+            }
+
+            .ranking h3 {
+                margin-bottom: 0.65rem;
+                font-size: 0.95rem;
+                letter-spacing: -0.02em;
+            }
+
+            .ranking-note {
+                margin: -0.35rem 0 0.8rem;
+                color: var(--muted);
+                font-size: 0.72rem;
+            }
+
+            .ranking-list {
+                display: grid;
+                gap: 0.4rem;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .ranking-list li {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.8rem;
+                padding: 0.45rem 0.6rem;
+                border-radius: 9px;
+                background: var(--page);
+                font-size: 0.8rem;
+            }
+
+            .ranking-list li:first-child {
+                background: var(--accent-soft);
+            }
+
+            .ranking-place {
+                min-width: 1.5rem;
+                color: var(--muted);
+                font-variant-numeric: tabular-nums;
+            }
+
+            .ranking-name {
+                flex: 1;
+                overflow: hidden;
+                font-weight: 700;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .ranking-score {
+                font-weight: 800;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .ranking-empty {
+                margin: 0;
+                color: var(--muted);
+                font-size: 0.78rem;
+            }
+
+            .ranking-form {
+                display: grid;
+                gap: 0.55rem;
+                margin-top: 0.9rem;
+            }
+
+            .ranking-form[hidden] {
+                display: none;
+            }
+
+            .ranking-form label {
+                font-size: 0.8rem;
+                font-weight: 700;
+            }
+
+            .ranking-form-row {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .ranking-form input {
+                width: 100%;
+                min-width: 0;
+                min-height: 44px;
+                padding: 0.55rem 0.7rem;
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                background: var(--surface);
+                color: var(--text);
+                font: inherit;
+            }
+
+            .ranking-form .button {
+                min-height: 44px;
+                padding-inline: 0.8rem;
+            }
+
+            .party-panel {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                background: var(--surface-soft);
+                box-shadow: none;
+            }
+
+            .party-panel p {
+                margin: 0.35rem 0 0;
+                color: var(--muted);
+                font-size: 0.82rem;
+            }
+
+            .party-panel h2 {
                 font-size: 1.1rem;
-                opacity: 0.9;
-                font-weight: 500;
             }
 
-            @keyframes countUp {
+            .site-footer {
+                border-top: 1px solid var(--line);
+                color: var(--muted);
+                font-size: 0.82rem;
+            }
+
+            .footer-inner {
+                display: flex;
+                min-height: 84px;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+
+            .footer-inner p {
+                margin: 0;
+            }
+
+            .toast {
+                position: fixed;
+                z-index: 30;
+                right: 1rem;
+                bottom: 1rem;
+                max-width: min(440px, calc(100% - 2rem));
+                padding: 0.9rem 1.1rem;
+                transform: translateY(150%);
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                background: var(--surface);
+                box-shadow: var(--shadow);
+                color: var(--text);
+                font-size: 0.88rem;
+                font-weight: 700;
+                transition: transform 220ms ease;
+            }
+
+            .toast.show {
+                transform: translateY(0);
+            }
+
+            .party-mode {
+                animation: party 1.2s ease-in-out infinite alternate;
+            }
+
+            @keyframes party {
                 from {
-                    transform: scale(0.5);
-                    opacity: 0;
+                    filter: hue-rotate(0deg);
                 }
                 to {
-                    transform: scale(1);
+                    filter: hue-rotate(38deg);
+                }
+            }
+
+            .summoned-cat {
+                position: fixed;
+                z-index: 25;
+                pointer-events: none;
+                font-size: 2rem;
+                animation: cat-pop 1.5s cubic-bezier(0.18, 0.7, 0.25, 1) forwards;
+            }
+
+            @keyframes cat-pop {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -40%) scale(0.5) rotate(-12deg);
+                }
+                18% {
                     opacity: 1;
                 }
-            }
-
-            .hacker-emoji {
-                font-size: 2.5rem;
-                display: block;
-                margin-bottom: 1rem;
-                animation: float 3s ease-in-out infinite;
-            }
-
-            @keyframes float {
-                0%,
                 100% {
-                    transform: translateY(0px) rotate(0deg);
-                }
-                50% {
-                    transform: translateY(-10px) rotate(5deg);
+                    opacity: 0;
+                    transform: translate(-50%, -150%) scale(1.2) rotate(18deg);
                 }
             }
 
-            @media (max-width: 768px) {
-                header {
-                    padding: 1.5rem;
-                    border-radius: 0 0 1.5rem 1.5rem;
+            .cat-rain {
+                position: fixed;
+                z-index: 24;
+                top: -3rem;
+                pointer-events: none;
+                animation: cat-fall 3.4s linear forwards;
+            }
+
+            @keyframes cat-fall {
+                to {
+                    transform: translateY(115vh) rotate(540deg);
                 }
-                h1 {
-                    font-size: 2.2rem;
+            }
+
+            .konami-flash {
+                position: fixed;
+                z-index: 29;
+                inset: 0;
+                display: grid;
+                place-items: center;
+                padding: 1rem;
+                background: color-mix(in srgb, var(--page) 84%, transparent);
+                color: var(--accent-dark);
+                font-size: clamp(1.4rem, 6vw, 3.5rem);
+                font-weight: 850;
+                letter-spacing: -0.04em;
+                opacity: 0;
+                pointer-events: none;
+                text-align: center;
+                transition: opacity 180ms ease;
+            }
+
+            .konami-flash.show {
+                opacity: 1;
+            }
+
+            @media (max-width: 760px) {
+                .header-inner,
+                .page-shell,
+                .footer-inner {
+                    width: min(100% - 2rem, 600px);
                 }
-                .card {
-                    padding: 1.5rem;
-                    border-radius: 1rem;
+
+                .header-inner {
+                    min-height: 66px;
                 }
-                .theme-toggle {
-                    padding: 0.7rem 1.2rem;
-                    font-size: 0.9rem;
+
+                .nav-links {
+                    gap: 0.8rem;
                 }
-                table {
-                    font-size: 0.85rem;
+
+                .nav-links a {
+                    font-size: 0.8rem;
                 }
-                th,
-                td {
-                    padding: 0.8rem;
+
+                .page-shell {
+                    padding-block: 1.5rem 3rem;
                 }
-                #chaos-btn {
-                    padding: 1rem 2rem;
-                    font-size: 1.2rem;
+
+                .hero {
+                    min-height: 0;
+                    padding: 2.2rem 1.6rem 8.5rem;
+                    border-radius: 25px;
                 }
-                .cyber-stats {
+
+                .hero-note {
+                    right: 1.6rem;
+                    bottom: 1.1rem;
+                    width: 90px;
+                    font-size: 2.9rem;
+                }
+
+                .hero::after {
+                    right: -4rem;
+                    bottom: -10rem;
+                    width: 17rem;
+                }
+
+                .content-grid {
                     grid-template-columns: 1fr;
-                    gap: 1rem;
                 }
-                .stat-number {
-                    font-size: 2.8rem;
-                }
+
             }
 
             @media (max-width: 480px) {
-                header {
-                    padding: 1rem;
+                .header-inner,
+                .page-shell,
+                .footer-inner {
+                    width: calc(100% - 1.25rem);
                 }
-                h1 {
-                    font-size: 1.8rem;
+
+                .header-actions {
+                    gap: 0.7rem;
                 }
-                .card {
-                    padding: 1rem;
+
+                .nav-links {
+                    gap: 0.65rem;
                 }
-                table {
-                    font-size: 0.8rem;
+
+                .nav-links a {
+                    font-size: 0.74rem;
                 }
-                th,
-                td {
-                    padding: 0.6rem;
+
+                .wordmark {
+                    gap: 0.45rem;
+                    font-size: 0.92rem;
                 }
-                #url-display {
-                    font-size: 0.9rem;
+
+                .wordmark-mark {
+                    width: 32px;
                 }
-                .stat-number {
-                    font-size: 2.2rem;
+
+                .icon-button {
+                    width: 38px;
+                }
+
+                .hero {
+                    padding-inline: 1.25rem;
+                }
+
+                .hero-buttons .button {
+                    flex: 1 1 auto;
+                }
+
+                .legend-list {
+                    grid-template-columns: 1fr;
+                }
+
+                .party-panel {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .footer-inner {
+                    align-items: flex-start;
+                    flex-direction: column;
+                    justify-content: center;
+                    padding-block: 1rem;
                 }
             }
 
-            .chaos-element {
-                position: fixed;
-                pointer-events: none;
-                z-index: 1000;
-                font-size: 2rem;
-                animation: chaosFloat 10s linear infinite;
-            }
-
-            @keyframes chaosFloat {
-                0% {
-                    transform: translate(0, 0) rotate(0deg);
-                }
-                25% {
-                    transform: translate(100px, 100px) rotate(90deg);
-                }
-                50% {
-                    transform: translate(200px, 0) rotate(180deg);
-                }
-                75% {
-                    transform: translate(100px, -100px) rotate(270deg);
-                }
-                100% {
-                    transform: translate(0, 0) rotate(360deg);
-                }
-            }
-
-            .rotate {
-                animation: rotation 2s infinite linear;
-            }
-
-            @keyframes rotation {
-                from {
-                    transform: rotate(0deg);
-                }
-                to {
-                    transform: rotate(359deg);
-                }
-            }
-
-            .shake {
-                animation: shake 0.5s infinite;
-            }
-
-            @keyframes shake {
-                0% {
-                    transform: translate(1px, 1px) rotate(0deg);
-                }
-                10% {
-                    transform: translate(-1px, -2px) rotate(-1deg);
-                }
-                20% {
-                    transform: translate(-3px, 0px) rotate(1deg);
-                }
-                30% {
-                    transform: translate(3px, 2px) rotate(0deg);
-                }
-                40% {
-                    transform: translate(1px, -1px) rotate(1deg);
-                }
-                50% {
-                    transform: translate(-1px, 2px) rotate(-1deg);
-                }
-                60% {
-                    transform: translate(-3px, 1px) rotate(0deg);
-                }
-                70% {
-                    transform: translate(3px, 1px) rotate(-1deg);
-                }
-                80% {
-                    transform: translate(-1px, -1px) rotate(1deg);
-                }
-                90% {
-                    transform: translate(1px, 2px) rotate(0deg);
-                }
-                100% {
-                    transform: translate(1px, -2px) rotate(-1deg);
-                }
-            }
-
-            .fly-text {
-                position: fixed;
-                pointer-events: none;
-                z-index: 9999;
-                white-space: nowrap;
-                animation: flyAround 15s linear infinite;
-            }
-
-            @keyframes flyAround {
-                0% {
-                    transform: translate(0, 0) rotate(0deg);
-                }
-                25% {
-                    transform: translate(calc(100vw - 100px), 100px)
-                        rotate(90deg);
-                }
-                50% {
-                    transform: translate(
-                            calc(100vw - 200px),
-                            calc(100vh - 100px)
-                        )
-                        rotate(180deg);
-                }
-                75% {
-                    transform: translate(100px, calc(100vh - 200px))
-                        rotate(270deg);
-                }
-                100% {
-                    transform: translate(0, 0) rotate(360deg);
-                }
-            }
-
-            .chaos-btn-hidden {
-                display: none !important;
-            }
-
-            .audio-fix {
-                position: fixed;
-                top: -100px;
-                left: -100px;
-                width: 10px;
-                height: 10px;
-                opacity: 0.001;
-                pointer-events: none;
-            }
-
-            /* --- Cat counter + easter egg additions --- */
-            .cat-counter {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.6rem;
-                background: var(--card-bg);
-                border: 2px solid var(--accent);
-                border-radius: 2rem;
-                padding: 0.6rem 1.4rem;
-                margin-top: 1rem;
-                font-weight: bold;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            }
-            .cat-counter span.count-num {
-                color: var(--accent);
-                font-size: 1.3rem;
-            }
-            .achievement-toast {
-                position: fixed;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%) translateY(150%);
-                background: linear-gradient(
-                    135deg,
-                    var(--accent) 0%,
-                    var(--accent2) 100%
-                );
-                color: white;
-                padding: 1rem 1.8rem;
-                border-radius: 1.2rem;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                font-weight: bold;
-                z-index: 5000;
-                transition: transform 0.4s ease;
-                white-space: nowrap;
-            }
-            .achievement-toast.show {
-                transform: translateX(-50%) translateY(0);
-            }
-            .konami-flash {
-                position: fixed;
-                inset: 0;
-                pointer-events: none;
-                z-index: 9998;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 4rem;
-                opacity: 0;
-                background: rgba(0, 0, 0, 0.15);
-            }
-            .konami-flash.show {
-                animation: konamiFlash 1.2s ease-out forwards;
-            }
-            @keyframes konamiFlash {
-                0% {
-                    opacity: 0;
-                    transform: scale(0.7);
-                }
-                20% {
-                    opacity: 1;
-                    transform: scale(1.1);
-                }
-                40% {
-                    transform: scale(1);
-                }
-                100% {
-                    opacity: 0;
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    scroll-behavior: auto !important;
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
                 }
             }
         </style>
     </head>
     <body>
-        <div class="particles" id="particles"></div>
+        <a class="skip-link" href="#main">Przejdź do treści</a>
 
-        <header id="main-header">
-            <h1 class="floating glow">Hi, I'm Bunio 👋</h1>
-            <p id="url-display" class="typewriter">
-                Retired dev • Loves chit‑chat 💬 • Cat person 🐱 • Open to new
-                friends ✨
-            </p>
-            <button class="theme-toggle" id="theme-toggle">Toggle Theme</button>
+        <header class="site-header">
+            <div class="header-inner">
+                <a class="wordmark" href="#top" aria-label="Strona główna Bunia">
+                    <span class="wordmark-mark" aria-hidden="true">🐾</span>
+                    <span>zakątek Bunia</span>
+                </a>
+                <div class="header-actions">
+                    <nav class="nav-links" aria-label="Nawigacja główna">
+                        <a href="#about">O mnie</a>
+                        <a href="#legends">Znajomi</a>
+                        <a href="#contact">Kontakt</a>
+                    </nav>
+                    <button
+                        class="icon-button"
+                        id="theme-toggle"
+                        type="button"
+                        aria-label="Przełącz na ciemny motyw"
+                        title="Zmień motyw"
+                    >
+                        <span id="theme-icon" aria-hidden="true">🌙</span>
+                    </button>
+                </div>
+            </div>
         </header>
 
-        <main>
-            <section class="card fade-in" style="text-align: center;">
-                <h2>🏆 Gablota Kotów</h2>
-                <p style="opacity: 0.8; margin-top: -0.5rem;">
-                    Łączna liczba kotów zrespionych przez wszystkich
-                    odwiedzających tę stronę.
-                </p>
-                <div
-                    class="stat-card"
-                    style="max-width: 320px; margin: 1.5rem auto 0.5rem;"
-                >
-                    <span class="hacker-emoji">🐱</span>
-                    <div class="stat-number" id="global-cat-count">–</div>
-                    <div class="stat-label">kotów zrespionych</div>
+        <main class="page-shell" id="main">
+            <section class="hero" id="top" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span class="status-dot"></span> Przyjazny zakątek internetu</p>
+                    <h1 id="hero-title">Cześć, tu <span>Bunio.</span></h1>
+                    <p class="hero-description">
+                        Wielbiciel kotów i rozmów na każdy temat. Rozgość się!
+                    </p>
+                    <div class="hero-buttons">
+                        <a class="button button-primary" href="#about">Poznajmy się <span aria-hidden="true">↘</span></a>
+                        <a class="button button-secondary" href="mailto:contact.Bunio@gmail.com">Napisz do mnie <span aria-hidden="true">↗</span></a>
+                    </div>
                 </div>
+                <div class="hero-note" aria-hidden="true">😺</div>
             </section>
 
-            <section class="card pulse fade-in">
-                <h2>About Me</h2>
-                <p>
-                    I'm a retired developer who enjoys relaxing, chit-chatting
-                    with people, sharing ideas, and of course, cats. 🐾 Always
-                    happy to meet new friends online.
-                </p>
-            </section>
+            <div class="content-grid">
+                <div class="main-column">
+                    <section class="panel" id="about" aria-labelledby="about-title">
+                        <div class="section-heading">
+                            <div>
+                                <p class="section-kicker">W skrócie</p>
+                                <h2 id="about-title">Kilka słów o mnie</h2>
+                            </div>
+                            <span aria-hidden="true">✦</span>
+                        </div>
+                        <p class="about-copy">
+                            Lubię odpoczywać, rozmawiać z ludźmi i wymieniać się
+                            pomysłami. Nie mogłoby też zabraknąć kotów! 🐾
+                            Zawsze chętnie poznaję nowych znajomych.
+                        </p>
+                    </section>
 
-            <section class="card fade-in">
-                <h2>Contact</h2>
-                <ul>
-                    <li>
-                        📧 Email:
-                        <a href="mailto:contact.Bunio@gmail.com"
-                            >contact.Bunio@gmail.com</a
-                        >
-                    </li>
-                    <li>
-                        💻 GitHub:
-                        <a href="https://github.com/MrBunio" target="_blank"
-                            >MrBunio</a
-                        >
-                    </li>
-                </ul>
-            </section>
+                    <section class="panel" id="legends" aria-labelledby="legends-title">
+                        <div class="section-heading">
+                            <div>
+                                <p class="section-kicker">Świetni ludzie, piękne wspomnienia</p>
+                                <h2 id="legends-title">Galeria legend</h2>
+                            </div>
+                            <span aria-hidden="true">♡</span>
+                        </div>
+                        <p class="legend-intro">
+                            Dziękuję, że jesteście częścią mojej historii i za
+                            wszystkie wspólne chwile. Jeśli kogoś pominąłem albo
+                            nie chcesz tu być — daj mi znać.
+                        </p>
+                        <ul class="legend-list">
+                            <li><button class="legend-name" type="button"><span>grabaz</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Alastor</span></button></li>
+                            <li><button class="legend-name" type="button"><span>mikson07</span></button></li>
+                            <li><button class="legend-name" type="button"><span>chesse enjoyer</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Uzbekistański Grzmot</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Big Black</span></button></li>
+                            <li><button class="legend-name" type="button"><span>ketna</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Marek Narty</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Muminek</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Fried By Konsol</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Pan.Delma</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Adasiek</span></button></li>
+                            <li><button class="legend-name" type="button"><span>nadixa21</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Pajracik</span></button></li>
+                            <li><button class="legend-name" type="button"><span>serek675</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Green Maid (my maid :3)</span></button></li>
+                            <li><button class="legend-name" type="button"><span>Katie Miguel</span></button></li>
+                        </ul>
+                    </section>
 
-            <section class="card fade-in">
-                <h2>Hall Of Legends Info</h2>
-                <p>
-                    If I know you, and you aren't on this list, please contact me and I'll add you. If you don't want to be on this list, that's fine too. Just let me know.
-                    You can contact me via email or discord direct messages. Thank you for being a part of my journey and for all the fun times we've had together! ♥️
-                </p>
-            </section>
+                    <section class="panel" id="contact" aria-labelledby="contact-title">
+                        <div class="section-heading">
+                            <div>
+                                <p class="section-kicker">Możesz śmiało napisać</p>
+                                <h2 id="contact-title">Bądźmy w kontakcie</h2>
+                            </div>
+                        </div>
+                        <ul class="contact-list">
+                            <li>
+                                <a href="mailto:contact.Bunio@gmail.com">
+                                    <span class="contact-icon" aria-hidden="true">✉</span>
+                                    contact.Bunio@gmail.com
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/MrBunio" target="_blank" rel="noopener noreferrer">
+                                    <span class="contact-icon" aria-hidden="true">⌘</span>
+                                    Mój GitHub — MrBunio <span aria-hidden="true">↗</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
 
-            <section class="card fade-in">
-                <h2>Hall Of Legends</h2>
-                <table id="users-table">
-                    <tr>
-                        <th>Nickname</th>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">grabaz</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Alastor</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">mikson07</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">chesse enjoyer</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Uzbekistański Grzmot</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Big Black</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">ketna</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Marek Narty</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Muminek</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Fried By Konsol</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Pan.Delma</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">Adasiek</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">nadixa21</td>
-                    </tr>
-                    <tr>
-                        
-                        <td class="rainbow">Pajracik</td>
-                    </tr>
-                    <tr>
-                        <td class="rainbow">serek675</td>
-                    </tr>
-
-                    <tr>
-                        <td class="rainbow">Green Maid (my maid :3)</td>
-                    </tr>
-                    <tr>
-
-                    <tr>
-                        <td class="rainbow">Katie Miguel</td>
-                    </tr>
-                    <tr> 
-
-                </table>
-            </section>
-
-            <div class="special-section fade-in">
-                <h2 class="glow">Special Section Just For You! 🎉</h2>
-                <p>
-                    You're awesome for visiting my page! Here's a virtual cat:
-                </p>
-                <div class="cat-emoji spin">😺</div>
-                <p>Click anywhere to create more cats!</p>
-                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 0.8rem;">
-                    Psst... try the <strong>Konami Code</strong> (↑ ↑ ↓ ↓ ← → ← → B A) for a surprise 👀
-                </p>
-            </div>
-
-            <div style="text-align: center; margin: 3rem">
-                <button
-                    id="chaos-btn"
-                    style="
-                        background: linear-gradient(
-                            135deg,
-                            #ff6b6b 0%,
-                            #ff0000 100%
-                        );
-                        color: white;
-                        padding: 1.2rem 2.5rem;
-                        font-size: 1.5rem;
-                        border: none;
-                        border-radius: 15px;
-                        cursor: pointer;
-                        box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
-                        transition: all 0.3s ease;
-                    "
+                <aside
+                    class="side-column"
+                    aria-label="Przewijany poziomo rząd dodatków. Przewiń w bok, aby zobaczyć więcej."
+                    tabindex="0"
                 >
-                    🚫 DO NOT CLICK 🚫
-                </button>
-            </div>
+                    <section class="panel counter-panel" aria-labelledby="counter-title">
+                        <p class="section-kicker">Wielka internetowa kocia ekipa</p>
+                        <h2 id="counter-title">Przywołane koty</h2>
+                        <p class="counter-value" id="global-cat-count" aria-live="polite">—</p>
+                        <p class="counter-label">przez wszystkich odwiedzających</p>
+                        <button class="button button-primary" id="summon-cat" type="button">
+                            Przywołaj kota <span aria-hidden="true">＋</span>
+                        </button>
+                        <p class="counter-status" id="counter-status" aria-live="polite">
+                            Łączę się z kocim licznikiem…
+                        </p>
+                    </section>
 
-            <div class="audio-fix">
-                <audio id="chaos-audio" loop muted>
-                    <source src="chaos-music.mp3" type="audio/mpeg" />
-                </audio>
+                    <section class="panel guest-card" aria-labelledby="guest-title">
+                        <div class="guest-cat" aria-hidden="true">😸</div>
+                        <p class="section-kicker">Coś specjalnie dla Ciebie</p>
+                        <h2 id="guest-title">Dzięki za odwiedziny!</h2>
+                        <p>Kliknij gdzieś, by znaleźć małą niespodziankę. Wpisz kod Konami, a spadnie koci deszcz. 👀</p>
+                        <button class="button button-secondary" id="konami-hint" type="button">
+                            Pokaż kod
+                        </button>
+                        <p class="easter-egg-hint" id="code-hint" hidden>
+                            ↑ ↑ ↓ ↓ ← → ← → B A
+                        </p>
+                    </section>
+
+                    <section class="panel fortune-card" aria-labelledby="fortune-title">
+                        <div class="guest-cat" aria-hidden="true">🔮</div>
+                        <p class="section-kicker">Kocia magia</p>
+                        <h2 id="fortune-title">Wróżba na dziś</h2>
+                        <p class="fortune-text" id="fortune-text" aria-live="polite">
+                            Ciekawość to pierwszy krok do przygody. 🐾
+                        </p>
+                        <button class="button button-secondary" id="fortune-button" type="button">
+                            Wylosuj wróżbę
+                        </button>
+                    </section>
+
+                    <section class="panel wiki-card" id="wikipedia" aria-labelledby="wiki-title">
+                        <div class="guest-cat" aria-hidden="true">📚</div>
+                        <p class="section-kicker">Krótka podróż w nieznane</p>
+                        <h2 id="wiki-title">Losowy artykuł z Wikipedii</h2>
+                        <p class="wiki-status" id="wiki-status" aria-live="polite">
+                            Ciekawostka z polskiej Wikipedii — na wyciągnięcie łapki.
+                        </p>
+                        <div class="wiki-result" id="wiki-result" hidden>
+                            <h3 id="wiki-article-title"></h3>
+                            <p id="wiki-extract"></p>
+                            <a
+                                class="wiki-link"
+                                id="wiki-link"
+                                href="https://pl.wikipedia.org/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Czytaj cały artykuł <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+                        <button class="button button-secondary" id="wiki-button" type="button">
+                            Losuj artykuł
+                        </button>
+                    </section>
+
+                    <section class="panel game-panel" aria-labelledby="game-title">
+                        <p class="section-kicker">Minigra · 20 sekund</p>
+                        <h2 id="game-title">Złap legendę!</h2>
+                        <p class="counter-label">
+                            Kliknij podświetlony nick, zanim zmieni się na następny.
+                        </p>
+                        <div class="game-stats" aria-label="Wynik gry">
+                            <span class="game-stat">Punkty<strong id="game-score">0</strong></span>
+                            <span class="game-stat">Czas<strong><span id="game-time">20</span> s</strong></span>
+                        </div>
+                        <button class="button button-primary" id="game-start" type="button">
+                            Start
+                        </button>
+                        <p class="game-status" id="game-status" aria-live="polite">
+                            Gotowy? Cel podświetli się w galerii legend.
+                        </p>
+                        <div class="ranking">
+                            <h3>🏆 Ranking tej przeglądarki · Top 10</h3>
+                            <p class="ranking-note">Wyniki zapisują się tylko w tej przeglądarce.</p>
+                            <ol class="ranking-list" id="ranking-list" aria-live="polite"></ol>
+                            <p class="ranking-empty" id="ranking-empty">
+                                Brak wyników — ustanów pierwszy rekord!
+                            </p>
+                            <form class="ranking-form" id="ranking-form" hidden>
+                                <label for="ranking-name">Nowy rekord! Wpisz swój nick:</label>
+                                <div class="ranking-form-row">
+                                    <input
+                                        id="ranking-name"
+                                        name="nickname"
+                                        type="text"
+                                        maxlength="20"
+                                        autocomplete="nickname"
+                                        placeholder="Twój nick"
+                                        required
+                                    />
+                                    <button class="button button-primary" type="submit">
+                                        Zapisz
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <section class="panel party-panel" aria-labelledby="party-title">
+                        <div>
+                            <h2 id="party-title">Masz ochotę na chaos?</h2>
+                            <p>Mały, krótkotrwały tryb imprezy. Bez konsekwencji.</p>
+                        </div>
+                        <button class="button button-secondary" id="party-toggle" type="button" aria-pressed="false">
+                            Rozkręć imprezę
+                        </button>
+                    </section>
+                </aside>
             </div>
         </main>
 
-        <div class="achievement-toast" id="achievement-toast"></div>
-        <div class="konami-flash" id="konami-flash">🎊 SECRET UNLOCKED 🎊</div>
-
-        <footer>
-            <p>© 2026 Bunio | Version 4.0 🔧</p>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>© <span id="year"></span> Bunio · Tworzone z kocią energią.</p>
+                <a href="#top">Na górę ↑</a>
+            </div>
         </footer>
 
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="konami-flash" id="konami-flash" aria-hidden="true">🎊 Sekret odkryty — koci deszcz! 🎊</div>
+
         <script>
-            function createParticles() {
-                const particlesContainer = document.getElementById("particles");
-                const colors = [
-                    "#e17dab",
-                    "#9c89b8",
-                    "#f0a6ca",
-                    "#ff91c1",
-                    "#b19cd9",
-                ];
-
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement("div");
-                    particle.className = "particle";
-                    particle.style.left = Math.random() * 100 + "vw";
-                    particle.style.animationDelay = Math.random() * 20 + "s";
-                    particle.style.animationDuration =
-                        15 + Math.random() * 10 + "s";
-                    particle.style.backgroundColor =
-                        colors[Math.floor(Math.random() * colors.length)];
-                    const size = 2 + Math.random() * 4;
-                    particle.style.width = size + "px";
-                    particle.style.height = size + "px";
-
-                    particlesContainer.appendChild(particle);
-                }
-            }
-
-            createParticles();
-
-            const titleEmojis = [
-                "😺",
-                "😸",
-                "😹",
-                "😻",
-                "😼",
-                "😽",
-                "🙀",
-                "😿",
-                "😾",
-                "🐱",
+            const themeToggle = document.getElementById("theme-toggle");
+            const themeIcon = document.getElementById("theme-icon");
+            const root = document.documentElement;
+            const toast = document.getElementById("toast");
+            const countElement = document.getElementById("global-cat-count");
+            const counterStatus = document.getElementById("counter-status");
+            const legendNames = [...document.querySelectorAll(".legend-name")];
+            const countApi = "https://countapi.mileshilliard.com/api/v1";
+            const wikipediaApi =
+                "https://pl.wikipedia.org/api/rest_v1/page/random/summary";
+            const fortunes = [
+                "Dziś czeka Cię coś miłego — może nawet mruczącego. 🐱",
+                "Zrób sobie przerwę. Nawet kot wie, że drzemka to dobry pomysł.",
+                "Ktoś niedługo poprawi Ci humor. Odwdzięcz się uśmiechem!",
+                "Twoja ciekawość zaprowadzi Cię dziś w ciekawe miejsce.",
+                "Pamiętaj: małe kroki też prowadzą do wielkich rzeczy. 🐾",
+                "Dziś szczęście jest po Twojej stronie. Koty to potwierdzają!",
+                "Czeka Cię dobra rozmowa — może właśnie tutaj?",
+                "Najlepszy plan na dziś? Trochę odpoczynku i coś pysznego.",
             ];
-            let titleEmojiIndex = 0;
-
-            function updateTitleEmoji() {
-                document.title = `Bunio – Retired Dev ${titleEmojis[titleEmojiIndex]}`;
-                titleEmojiIndex = (titleEmojiIndex + 1) % titleEmojis.length;
-            }
-
-            setInterval(updateTitleEmoji, 2000);
-
-            function toggleTheme() {
-                const current =
-                    document.documentElement.getAttribute("data-theme");
-                const next = current === "dark" ? "light" : "dark";
-                document.documentElement.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-            }
-
-            function animateCounter(element, target, duration = 2000) {
-                const start = 0;
-                const increment = target / (duration / 16);
-                let current = start;
-
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    element.textContent = Math.floor(current).toLocaleString();
-                }, 16);
-            }
-
-            (function () {
-                const saved = localStorage.getItem("theme");
-                if (saved) {
-                    document.documentElement.setAttribute("data-theme", saved);
-                }
-
-                document
-                    .getElementById("theme-toggle")
-                    .addEventListener("click", toggleTheme);
-            })();
-
-            
-            const GLOBAL_COUNT_API = "https://countapi.mileshilliard.com/api/v1";
-          
-            const GLOBAL_CAT_KEY =
+            const countKey =
                 "bunio-cats-v2-" +
                 (location.hostname || "local").replace(/[^a-z0-9]/gi, "-") +
                 (location.pathname || "").replace(/[^a-z0-9]/gi, "-");
-            let globalCatCount = null;
+            let toastTimer;
+            let partyTimer;
+            let gameTimer;
+            let targetTimer;
+            let gameScore = 0;
+            let gameTime = 20;
+            let gameTarget = null;
+            const rankingStorageKey = "bunio-legend-game-ranking-v1";
+            let rankingEntries = [];
+            let pendingScore = null;
 
-            function updateGlobalCatDisplay() {
-                const el = document.getElementById("global-cat-count");
-                if (!el) return;
-                el.textContent =
-                    globalCatCount === null
-                        ? "–"
-                        : globalCatCount.toLocaleString("pl-PL");
+            function setTheme(theme) {
+                root.dataset.theme = theme;
+                themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+                themeToggle.setAttribute(
+                    "aria-label",
+                    `Przełącz na ${theme === "dark" ? "jasny" : "ciemny"} motyw`,
+                );
             }
 
-            async function fetchGlobalCatCount() {
+            try {
+                const savedTheme = localStorage.getItem("bunio-theme");
+                setTheme(savedTheme === "dark" ? "dark" : "light");
+            } catch (error) {
+                console.error("Nie udało się odczytać zapisanego motywu.", error);
+                setTheme("light");
+            }
+
+            themeToggle.addEventListener("click", () => {
+                const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+                setTheme(nextTheme);
                 try {
-                    const res = await fetch(
-                        `${GLOBAL_COUNT_API}/get/${GLOBAL_CAT_KEY}`,
-                    );
-                    if (res.ok) {
-                        const data = await res.json();
-                        globalCatCount = parseInt(data.value, 10) || 0;
-                    } else {
-                        
-                        globalCatCount = 0;
-                    }
-                } catch (e) {
-                    globalCatCount = null; 
+                    localStorage.setItem("bunio-theme", nextTheme);
+                } catch (error) {
+                    console.error("Nie udało się zapisać ustawienia motywu.", error);
                 }
-                updateGlobalCatDisplay();
-            }
+            });
 
-            async function hitGlobalCatCounter() {
-                try {
-                    const res = await fetch(
-                        `${GLOBAL_COUNT_API}/hit/${GLOBAL_CAT_KEY}`,
-                    );
-                    if (res.ok) {
-                        const data = await res.json();
-                        globalCatCount =
-                            parseInt(data.value, 10) ||
-                            (globalCatCount || 0) + 1;
-                        updateGlobalCatDisplay();
-
-                        if (
-                            CAT_MILESTONES.includes(globalCatCount) &&
-                            !seenMilestones.has(globalCatCount)
-                        ) {
-                            seenMilestones.add(globalCatCount);
-                            showAchievementToast(
-                                `🏆 ${globalCatCount} cats summoned site-wide!`,
-                            );
-                        }
-                    }
-                } catch (e) {
-                
-                }
-            }
-
-            fetchGlobalCatCount();
-
-            const CAT_MILESTONES = [5, 10, 25, 50, 100, 250, 500, 1000];
-            const seenMilestones = new Set();
-
-            let toastTimer = null;
-            function showAchievementToast(message) {
-                const toast = document.getElementById("achievement-toast");
+            function showToast(message) {
                 toast.textContent = message;
                 toast.classList.add("show");
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => {
+                window.clearTimeout(toastTimer);
+                toastTimer = window.setTimeout(() => {
                     toast.classList.remove("show");
                 }, 2800);
             }
 
-            function registerCatSummoned() {
-                hitGlobalCatCounter();
+            function updateCounter(value) {
+                countElement.textContent = Number(value).toLocaleString("pl-PL");
             }
 
-            document.addEventListener("click", (e) => {
-                if (
-                    e.target.id !== "chaos-btn" &&
-                    e.target.id !== "theme-toggle"
-                ) {
-                    createCat(e.clientX, e.clientY);
-                    registerCatSummoned();
+            async function loadCatCount() {
+                try {
+                    const response = await fetch(`${countApi}/get/${countKey}`);
+                    if (response.status === 404) {
+                        updateCounter(0);
+                        counterStatus.textContent = "Jeszcze nie ma kotów — przywołaj pierwszego!";
+                        counterStatus.dataset.state = "ready";
+                        return;
+                    }
+                    if (!response.ok) {
+                        throw new Error(`Licznik kotów zwrócił błąd ${response.status}.`);
+                    }
+                    const data = await response.json();
+                    const count = Number.parseInt(data.value, 10);
+                    if (!Number.isFinite(count)) {
+                        throw new Error("Licznik kotów zwrócił nieprawidłową wartość.");
+                    }
+                    updateCounter(count);
+                    counterStatus.textContent = "Każde kliknięcie dodaje kolejnego kota. 🐾";
+                    counterStatus.dataset.state = "ready";
+                } catch (error) {
+                    console.error("Nie udało się pobrać wspólnego licznika kotów.", error);
+                    countElement.textContent = "—";
+                    counterStatus.textContent = "Wspólny licznik jest teraz niedostępny.";
+                    counterStatus.dataset.state = "error";
+                }
+            }
+
+            async function registerCat() {
+                try {
+                    const response = await fetch(`${countApi}/hit/${countKey}`);
+                    if (!response.ok) {
+                        throw new Error(`Licznik kotów zwrócił błąd ${response.status}.`);
+                    }
+                    const data = await response.json();
+                    const count = Number.parseInt(data.value, 10);
+                    if (!Number.isFinite(count)) {
+                        throw new Error("Licznik kotów zwrócił nieprawidłową wartość.");
+                    }
+                    updateCounter(count);
+                    counterStatus.textContent = "Każde kliknięcie dodaje kolejnego kota. 🐾";
+                    counterStatus.dataset.state = "ready";
+                    if ([5, 10, 25, 50, 100, 250, 500, 1000].includes(count)) {
+                        showToast(`🎉 Wszyscy przywołali już ${count} kotów!`);
+                    }
+                } catch (error) {
+                    console.error("Nie udało się zaktualizować wspólnego licznika kotów.", error);
+                    counterStatus.textContent = "Kot przywołany, ale licznika nie udało się zaktualizować.";
+                    counterStatus.dataset.state = "error";
+                }
+            }
+
+            function summonCat(x, y, shouldCount = true) {
+                const cat = document.createElement("span");
+                cat.className = "summoned-cat";
+                cat.setAttribute("aria-hidden", "true");
+                cat.textContent = ["😺", "😸", "😻", "🐱"][
+                    Math.floor(Math.random() * 4)
+                ];
+                cat.style.left = `${x}px`;
+                cat.style.top = `${y}px`;
+                document.body.append(cat);
+                cat.addEventListener("animationend", () => cat.remove(), {
+                    once: true,
+                });
+                if (shouldCount) {
+                    void registerCat();
+                }
+            }
+
+            document.getElementById("summon-cat").addEventListener("click", (event) => {
+                summonCat(event.clientX, event.clientY);
+            });
+
+            const gameStart = document.getElementById("game-start");
+            const gameStatus = document.getElementById("game-status");
+            const gameScoreDisplay = document.getElementById("game-score");
+            const gameTimeDisplay = document.getElementById("game-time");
+            const rankingList = document.getElementById("ranking-list");
+            const rankingEmpty = document.getElementById("ranking-empty");
+            const rankingForm = document.getElementById("ranking-form");
+            const rankingName = document.getElementById("ranking-name");
+            const fortuneText = document.getElementById("fortune-text");
+            let previousFortune = -1;
+
+            document.getElementById("fortune-button").addEventListener("click", () => {
+                let nextFortune = Math.floor(Math.random() * fortunes.length);
+                if (fortunes.length > 1) {
+                    while (nextFortune === previousFortune) {
+                        nextFortune = Math.floor(Math.random() * fortunes.length);
+                    }
+                }
+                previousFortune = nextFortune;
+                fortuneText.textContent = fortunes[nextFortune];
+            });
+
+            const wikiButton = document.getElementById("wiki-button");
+            const wikiStatus = document.getElementById("wiki-status");
+            const wikiResult = document.getElementById("wiki-result");
+
+            wikiButton.addEventListener("click", async () => {
+                wikiButton.disabled = true;
+                wikiButton.textContent = "Szukam artykułu…";
+                wikiStatus.textContent = "Losuję ciekawostkę z polskiej Wikipedii…";
+                wikiResult.hidden = true;
+                try {
+                    const response = await fetch(wikipediaApi, {
+                        headers: { Accept: "application/json" },
+                    });
+                    if (!response.ok) {
+                        throw new Error(`Wikipedia zwróciła błąd ${response.status}.`);
+                    }
+
+                    const article = await response.json();
+                    if (
+                        typeof article.title !== "string" ||
+                        typeof article.extract !== "string" ||
+                        !article.extract.trim()
+                    ) {
+                        throw new Error("Wikipedia zwróciła niekompletny artykuł.");
+                    }
+
+                    document.getElementById("wiki-article-title").textContent =
+                        article.title;
+                    document.getElementById("wiki-extract").textContent =
+                        article.extract;
+                    document.getElementById("wiki-link").href =
+                        `https://pl.wikipedia.org/wiki/${encodeURIComponent(
+                            article.title.replace(/ /g, "_"),
+                        )}`;
+                    wikiResult.hidden = false;
+                    wikiStatus.textContent = "Wylosowany artykuł:";
+                } catch (error) {
+                    console.error("Nie udało się wylosować artykułu z Wikipedii.", error);
+                    wikiStatus.textContent =
+                        "Nie udało się pobrać artykułu. Sprawdź połączenie i spróbuj ponownie.";
+                } finally {
+                    wikiButton.disabled = false;
+                    wikiButton.textContent = "Losuj kolejny artykuł";
                 }
             });
 
-            function createCat(x, y) {
-                const cat = document.createElement("div");
-                cat.innerHTML = "😺";
-                cat.style.position = "fixed";
-                cat.style.left = x - 15 + "px";
-                cat.style.top = y - 15 + "px";
-                cat.style.fontSize = "2rem";
-                cat.style.zIndex = "10";
-                cat.style.pointerEvents = "none";
-                cat.style.opacity = "0";
-                cat.style.transition = "opacity 0.3s, transform 2s";
-                cat.style.filter = "drop-shadow(0 2px 5px rgba(0,0,0,0.3))";
+            function renderRanking() {
+                rankingList.replaceChildren();
+                rankingEntries.forEach((entry, index) => {
+                    const item = document.createElement("li");
+                    const place = document.createElement("span");
+                    const name = document.createElement("span");
+                    const score = document.createElement("span");
 
-                document.body.appendChild(cat);
-
-                setTimeout(() => {
-                    cat.style.opacity = "1";
-                }, 10);
-
-                setTimeout(() => {
-                    cat.style.opacity = "0";
-                    cat.style.transform = "translateY(-100px) rotate(360deg)";
-                }, 100);
-
-                setTimeout(() => {
-                    if (cat.parentNode) {
-                        document.body.removeChild(cat);
-                    }
-                }, 2100);
+                    place.className = "ranking-place";
+                    place.textContent = `${index + 1}.`;
+                    name.className = "ranking-name";
+                    name.textContent = entry.name;
+                    score.className = "ranking-score";
+                    score.textContent = `${entry.score} pkt`;
+                    item.append(place, name, score);
+                    rankingList.append(item);
+                });
+                rankingEmpty.hidden = rankingEntries.length > 0;
             }
 
-            const KONAMI_SEQUENCE = [
+            function loadRanking() {
+                try {
+                    const saved = localStorage.getItem(rankingStorageKey);
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        if (!Array.isArray(parsed)) {
+                            throw new Error("Zapisany ranking nie jest listą.");
+                        }
+                        rankingEntries = parsed
+                            .filter(
+                                (entry) =>
+                                    entry &&
+                                    typeof entry.name === "string" &&
+                                    Number.isInteger(entry.score) &&
+                                    entry.score >= 0,
+                            )
+                            .map((entry) => ({
+                                name: entry.name.trim().slice(0, 20),
+                                score: entry.score,
+                                date: Number(entry.date) || 0,
+                            }))
+                            .filter((entry) => entry.name.length > 0)
+                            .sort((left, right) => right.score - left.score || left.date - right.date)
+                            .slice(0, 10);
+                    }
+                } catch (error) {
+                    console.error("Nie udało się wczytać lokalnego rankingu gry.", error);
+                    gameStatus.textContent = "Nie udało się wczytać wyników, ale nadal możesz zagrać.";
+                }
+                renderRanking();
+            }
+
+            function qualifiesForRanking(score) {
+                return score > 0 &&
+                    (rankingEntries.length < 10 ||
+                        score > rankingEntries[rankingEntries.length - 1].score);
+            }
+
+            function chooseGameTarget() {
+                if (!gameTarget || legendNames.length < 2) {
+                    gameTarget = legendNames[Math.floor(Math.random() * legendNames.length)];
+                } else {
+                    const choices = legendNames.filter((name) => name !== gameTarget);
+                    gameTarget = choices[Math.floor(Math.random() * choices.length)];
+                }
+
+                legendNames.forEach((name) => {
+                    name.removeAttribute("data-game-target");
+                    name.classList.toggle("game-active", Boolean(gameTimer));
+                });
+                gameTarget.dataset.gameTarget = "true";
+                gameStatus.textContent = `Szybko! Kliknij nick ${gameTarget.textContent.trim()}!`;
+            }
+
+            function endGame() {
+                const finishedScore = gameScore;
+                window.clearInterval(gameTimer);
+                window.clearInterval(targetTimer);
+                gameTimer = null;
+                targetTimer = null;
+                gameTarget = null;
+                legendNames.forEach((name) => {
+                    name.removeAttribute("data-game-target");
+                    name.classList.remove("game-active");
+                });
+                gameStart.disabled = false;
+                gameStart.textContent = "Zagraj ponownie";
+                gameStatus.textContent = `Koniec czasu! Twój wynik: ${gameScore} pkt.`;
+                if (qualifiesForRanking(finishedScore)) {
+                    pendingScore = finishedScore;
+                    rankingForm.hidden = false;
+                    rankingName.value = "";
+                    rankingName.focus();
+                    gameStatus.textContent += " To wynik w Top 10 — wpisz swój nick!";
+                } else {
+                    rankingForm.hidden = true;
+                }
+            }
+
+            rankingForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const name = rankingName.value.trim().slice(0, 20);
+                if (!name || pendingScore === null) {
+                    return;
+                }
+
+                const updatedRanking = [
+                    ...rankingEntries,
+                    { name, score: pendingScore, date: Date.now() },
+                ]
+                    .sort((left, right) => right.score - left.score || left.date - right.date)
+                    .slice(0, 10);
+                try {
+                    localStorage.setItem(
+                        rankingStorageKey,
+                        JSON.stringify(updatedRanking),
+                    );
+                    rankingEntries = updatedRanking;
+                    renderRanking();
+                    rankingForm.hidden = true;
+                    pendingScore = null;
+                    gameStatus.textContent = "Wynik zapisany w rankingu tej przeglądarki!";
+                } catch (error) {
+                    console.error("Nie udało się zapisać lokalnego rankingu gry.", error);
+                    gameStatus.textContent = "Nie udało się zapisać wyniku w tej przeglądarce.";
+                }
+            });
+
+            gameStart.addEventListener("click", () => {
+                if (gameTimer) {
+                    return;
+                }
+                pendingScore = null;
+                rankingForm.hidden = true;
+                gameScore = 0;
+                gameTime = 20;
+                gameScoreDisplay.textContent = "0";
+                gameTimeDisplay.textContent = String(gameTime);
+                gameStart.disabled = true;
+                gameStart.textContent = "Gramy!";
+                chooseGameTarget();
+                targetTimer = window.setInterval(chooseGameTarget, 1400);
+                gameTimer = window.setInterval(() => {
+                    gameTime -= 1;
+                    gameTimeDisplay.textContent = String(gameTime);
+                    if (gameTime <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            });
+
+            document.querySelector(".legend-list").addEventListener("click", (event) => {
+                if (
+                    !(event.target instanceof Element) ||
+                    !gameTimer ||
+                    !event.target.closest(".legend-name")
+                ) {
+                    return;
+                }
+                const clickedName = event.target.closest(".legend-name");
+                if (clickedName === gameTarget) {
+                    gameScore += 1;
+                    gameScoreDisplay.textContent = String(gameScore);
+                    chooseGameTarget();
+                }
+            });
+
+            loadRanking();
+
+            document.querySelector("main").addEventListener("click", (event) => {
+                if (
+                    event.target instanceof Element &&
+                    !event.target.closest("a, button")
+                ) {
+                    summonCat(event.clientX, event.clientY);
+                }
+            });
+
+            const konamiSequence = [
                 "ArrowUp",
                 "ArrowUp",
                 "ArrowDown",
@@ -1090,349 +1724,71 @@
             let konamiProgress = 0;
 
             function catRainBurst() {
-                const rainEmojis = ["😺", "😸", "😻", "🐱", "🌈", "✨"];
-                for (let i = 0; i < 60; i++) {
-                    setTimeout(() => {
-                        const drop = document.createElement("div");
-                        drop.textContent =
-                            rainEmojis[
-                                Math.floor(Math.random() * rainEmojis.length)
-                            ];
-                        drop.style.position = "fixed";
-                        drop.style.left = Math.random() * 100 + "vw";
-                        drop.style.top = "-50px";
-                        drop.style.fontSize = 1.5 + Math.random() * 2 + "rem";
-                        drop.style.zIndex = "9997";
-                        drop.style.pointerEvents = "none";
-                        drop.style.transition = `top ${2 + Math.random() * 2}s linear, transform ${2 + Math.random() * 2}s linear`;
-                        document.body.appendChild(drop);
-
-                        requestAnimationFrame(() => {
-                            drop.style.top = "110vh";
-                            drop.style.transform = `rotate(${Math.random() * 720 - 360}deg)`;
+                const cats = ["😺", "😸", "😻", "🐱", "✨"];
+                for (let index = 0; index < 36; index += 1) {
+                    window.setTimeout(() => {
+                        const cat = document.createElement("span");
+                        cat.className = "cat-rain";
+                        cat.setAttribute("aria-hidden", "true");
+                        cat.textContent = cats[Math.floor(Math.random() * cats.length)];
+                        cat.style.left = `${Math.random() * 100}vw`;
+                        cat.style.fontSize = `${1.2 + Math.random() * 1.8}rem`;
+                        document.body.append(cat);
+                        cat.addEventListener("animationend", () => cat.remove(), {
+                            once: true,
                         });
-
-                        setTimeout(() => {
-                            if (drop.parentNode) drop.parentNode.removeChild(drop);
-                        }, 4200);
-                    }, i * 60);
+                    }, index * 55);
                 }
             }
 
-            function triggerKonamiEasterEgg() {
-                const flash = document.getElementById("konami-flash");
-                flash.classList.remove("show");
-                void flash.offsetWidth; // restart animation
-                flash.classList.add("show");
-                showAchievementToast("🎮 Konami Code activated — enjoy the cat rain!");
-                catRainBurst();
-            }
-
-            document.addEventListener("keydown", (e) => {
-                const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-                if (key === KONAMI_SEQUENCE[konamiProgress]) {
-                    konamiProgress++;
-                    if (konamiProgress === KONAMI_SEQUENCE.length) {
-                        triggerKonamiEasterEgg();
+            document.addEventListener("keydown", (event) => {
+                const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+                if (key === konamiSequence[konamiProgress]) {
+                    konamiProgress += 1;
+                    if (konamiProgress === konamiSequence.length) {
+                        document.getElementById("konami-flash").classList.add("show");
+                        window.setTimeout(() => {
+                            document.getElementById("konami-flash").classList.remove("show");
+                        }, 1400);
+                        showToast("Kod Konami aktywowany — niech spadają koty!");
+                        catRainBurst();
                         konamiProgress = 0;
                     }
                 } else {
-                    konamiProgress = key === KONAMI_SEQUENCE[0] ? 1 : 0;
+                    konamiProgress = key === konamiSequence[0] ? 1 : 0;
                 }
             });
 
-            window.addEventListener("load", () => {
-                createConfetti();
-
-                document.querySelectorAll(".card").forEach((card, index) => {
-                    card.style.animationDelay = index * 0.2 + "s";
-                });
+            const hintButton = document.getElementById("konami-hint");
+            const codeHint = document.getElementById("code-hint");
+            hintButton.addEventListener("click", () => {
+                codeHint.hidden = !codeHint.hidden;
+                hintButton.textContent = codeHint.hidden ? "Pokaż kod" : "Ukryj kod";
             });
 
-            function createConfetti() {
-                const colors = [
-                    "#ff0000",
-                    "#00ff00",
-                    "#0000ff",
-                    "#ffff00",
-                    "#ff00ff",
-                    "#00ffff",
-                ];
+            const partyButton = document.getElementById("party-toggle");
+            function stopParty() {
+                document.body.classList.remove("party-mode");
+                partyButton.setAttribute("aria-pressed", "false");
+                partyButton.textContent = "Rozkręć imprezę";
+                window.clearTimeout(partyTimer);
+            }
 
-                for (let i = 0; i < 30; i++) {
-                    const confetti = document.createElement("div");
-                    confetti.className = "confetti";
-                    confetti.style.backgroundColor =
-                        colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.left = Math.random() * 100 + "vw";
-                    confetti.style.top = "-10px";
-                    confetti.style.borderRadius =
-                        Math.random() > 0.5 ? "50%" : "0";
-
-                    document.body.appendChild(confetti);
-
-                    const animationDuration = Math.random() * 3 + 2;
-                    confetti.style.animation = `fall ${animationDuration}s linear forwards, fade ${animationDuration}s linear forwards`;
-
-                    setTimeout(() => {
-                        if (confetti.parentNode) {
-                            document.body.removeChild(confetti);
-                        }
-                    }, animationDuration * 1000);
+            partyButton.addEventListener("click", () => {
+                if (partyButton.getAttribute("aria-pressed") === "true") {
+                    stopParty();
+                    return;
                 }
-            }
+                document.body.classList.add("party-mode");
+                partyButton.setAttribute("aria-pressed", "true");
+                partyButton.textContent = "Koniec imprezy";
+                partyTimer = window.setTimeout(stopParty, 10000);
+            });
 
-            const style = document.createElement("style");
-            style.textContent = `
-      @keyframes fall {
-        to {
-          top: 100vh;
-          transform: translateX(${Math.random() > 0.5 ? "" : "-"}${Math.random() * 100}vw) rotate(${Math.random() * 360}deg);
-        }
-      }
-
-      @keyframes fade {
-        0% { opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { opacity: 0; }
-      }
-    `;
-            document.head.appendChild(style);
-
-            let chaos = false;
-            let audioInitialized = false;
-            let nicknames = [];
-            let nicknameVelocities = [];
-            let flyingElements = [];
-
-            function initializeAudio() {
-                if (audioInitialized) return;
-
-                const chaosAudio = document.getElementById("chaos-audio");
-
-                chaosAudio.muted = false;
-                chaosAudio.volume = 0.3;
-
-                const playAudio = () => {
-                    chaosAudio
-                        .play()
-                        .then(() => {
-                            audioInitialized = true;
-                        })
-                        .catch((e) => {
-                            setTimeout(playAudio, 100);
-                        });
-                };
-
-                playAudio();
-            }
-
-            function makeTextFly(element) {
-                const flyElement = element.cloneNode(true);
-                flyElement.className = "fly-text";
-                flyElement.style.left =
-                    Math.random() * window.innerWidth + "px";
-                flyElement.style.top =
-                    Math.random() * window.innerHeight + "px";
-                flyElement.style.fontSize = Math.random() * 2 + 1 + "rem";
-                flyElement.style.color = getRandomColor();
-                document.body.appendChild(flyElement);
-                flyingElements.push(flyElement);
-            }
-
-            function getRandomColor() {
-                const colors = [
-                    "#ff0000",
-                    "#00ff00",
-                    "#0000ff",
-                    "#ffff00",
-                    "#ff00ff",
-                    "#00ffff",
-                ];
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            document
-                .getElementById("chaos-btn")
-                .addEventListener("click", function () {
-                    if (chaos) return;
-
-                    chaos = true;
-                    const chaosBtn = document.getElementById("chaos-btn");
-                    chaosBtn.classList.add("chaos-btn-hidden");
-
-                    initializeAudio();
-
-                    document.body.classList.add("chaos-mode");
-
-                    document.getElementById("main-header").style.background =
-                        "transparent";
-                    document.getElementById("main-header").style.boxShadow =
-                        "none";
-                    document.getElementById("users-table").style.display =
-                        "none";
-
-                    const allTextElements = document.querySelectorAll(
-                        "h1, h2, h3, p, li, td, th, a, span",
-                    );
-                    allTextElements.forEach((element) => {
-                        makeTextFly(element);
-                    });
-
-                    const nicknameElements =
-                        document.querySelectorAll(".rainbow");
-                    nicknames = Array.from(nicknameElements);
-
-                    nicknameVelocities = nicknames.map(() => ({
-                        x:
-                            (Math.random() * 6 + 3) *
-                            (Math.random() > 0.5 ? 1 : -1),
-                        y:
-                            (Math.random() * 6 + 3) *
-                            (Math.random() > 0.5 ? 1 : -1),
-                    }));
-
-                    nicknames.forEach((nickname, index) => {
-                        nickname.style.position = "fixed";
-                        nickname.style.display = "inline-block";
-                        nickname.style.margin = "0";
-                        nickname.style.transition = "all 0.1s linear";
-                        nickname.style.zIndex = "1000";
-                        nickname.style.left =
-                            Math.random() * (window.innerWidth - 200) + "px";
-                        nickname.style.top =
-                            Math.random() * (window.innerHeight - 50) + "px";
-                        nickname.style.fontSize = "1.8rem";
-                        nickname.style.pointerEvents = "none";
-                    });
-
-                    function bounceNicknames() {
-                        if (!chaos) return;
-
-                        nicknames.forEach((nickname, index) => {
-                            const rect = nickname.getBoundingClientRect();
-                            let { x, y } = nicknameVelocities[index];
-
-                            if (
-                                rect.left <= 0 ||
-                                rect.right >= window.innerWidth
-                            ) {
-                                x = -x;
-                            }
-
-                            if (
-                                rect.top <= 0 ||
-                                rect.bottom >= window.innerHeight
-                            ) {
-                                y = -y;
-                            }
-
-                            nicknameVelocities[index] = { x, y };
-
-                            const currentLeft =
-                                parseFloat(nickname.style.left) || 0;
-                            const currentTop =
-                                parseFloat(nickname.style.top) || 0;
-                            nickname.style.left = currentLeft + x + "px";
-                            nickname.style.top = currentTop + y + "px";
-                            nickname.style.transform = `rotate(${Math.random() * 360}deg)`;
-                        });
-
-                        requestAnimationFrame(bounceNicknames);
-                    }
-
-                    bounceNicknames();
-
-                    const elements = document.querySelectorAll(
-                        "h1, h2, p, th, li, .theme-toggle",
-                    );
-                    elements.forEach((el) => {
-                        el.style.position = "fixed";
-                        el.style.display = "inline-block";
-                        el.style.margin = "0";
-                        el.style.transition = "all 0.5s linear";
-                        el.style.zIndex = "1000";
-                    });
-
-                    function moveElements() {
-                        elements.forEach((el) => {
-                            const maxX = window.innerWidth - el.offsetWidth;
-                            const maxY = window.innerHeight - el.offsetHeight;
-                            el.style.left = Math.random() * maxX + "px";
-                            el.style.top = Math.random() * maxY + "px";
-                            el.style.transform = `rotate(${Math.random() * 360}deg)`;
-                        });
-                    }
-
-                    setInterval(moveElements, 800);
-
-                    setInterval(() => {
-                        document.body.style.background = `linear-gradient(90deg, hsl(${Math.random() * 360},100%,50%), hsl(${Math.random() * 360},100%,50%))`;
-                    }, 200);
-
-                    setInterval(createConfetti, 500);
-
-                    const emojis = [
-                        "😺",
-                        "😸",
-                        "😹",
-                        "😻",
-                        "😼",
-                        "😽",
-                        "🙀",
-                        "😿",
-                        "😾",
-                        "🐱",
-                        "🌈",
-                        "🔥",
-                    ];
-                    setInterval(() => {
-                        const emoji = document.createElement("div");
-                        emoji.innerHTML =
-                            emojis[Math.floor(Math.random() * emojis.length)];
-                        emoji.className = "chaos-element";
-                        emoji.style.left =
-                            Math.random() * window.innerWidth + "px";
-                        emoji.style.top =
-                            Math.random() * window.innerHeight + "px";
-                        emoji.style.fontSize = Math.random() * 3 + 2 + "rem";
-                        document.body.appendChild(emoji);
-
-                        setTimeout(() => {
-                            if (emoji.parentNode) {
-                                document.body.removeChild(emoji);
-                            }
-                        }, 10000);
-                    }, 500);
-
-                    document.body.classList.add("shake");
-                });
-
-            const emojis = [
-                "😀",
-                "😂",
-                "😎",
-                "🤖",
-                "👾",
-                "🐱",
-                "🌈",
-                "🔥",
-                "✨",
-                "💀",
-                "🍕",
-                "🎶",
-            ];
-            function updateUrlDisplay() {
-                const urlDisplay = document.getElementById("url-display");
-                const baseText =
-                    "Retired dev • Loves chit‑chat 💬 • Cat person 🐱 • Open to new friends ✨";
-                const randomEmoji =
-                    emojis[Math.floor(Math.random() * emojis.length)];
-                urlDisplay.textContent = baseText + " " + randomEmoji;
-            }
-            setInterval(updateUrlDisplay, 3000);
-            updateUrlDisplay();
+            document.getElementById("year").textContent = String(
+                new Date().getFullYear(),
+            );
+            void loadCatCount();
         </script>
     </body>
 </html>
